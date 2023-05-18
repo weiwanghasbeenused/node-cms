@@ -1,0 +1,14 @@
+html
+    include includes/head.pug
+    body
+        main#main-container
+            if self
+                section#self
+                    div#self-name.row-name #{self.name}
+                    div.row-actions
+                        a.row-action.edit-btn(href="/edit" + tree)
+                        a.row-action.delete-btn(href="/delete" + tree)
+            if children.length
+                section#children
+            section#tool
+                a.row-action.add-btn(href="/add" + tree) ADD

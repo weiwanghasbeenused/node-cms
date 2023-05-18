@@ -1,0 +1,18 @@
+html
+    include includes/head-form.pug
+    body
+        main#main-container
+            section#form-container(enctype="multipart/form-data", method="post")
+                each f, n in fields
+                    div.form-section
+                        - let id = 'field-' + n;
+                        if f.element == 'input'
+                            include includes/input.pug
+                        else if f.element == 'wysiwyg'
+                            include includes/wysiwyg.pug
+                        else if f.element == 'textarea'
+                            include includes/textarea.pug
+            section#tool
+                a.row-action.add-btn(href="/add" + tree)
+        script(src="/js/wysiwyg.js", type="text/javascript")
+        
