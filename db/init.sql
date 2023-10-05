@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `pages`;
 CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `active` int(1) unsigned NOT NULL default '1',
@@ -5,7 +6,9 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `modified` datetime default NULL,
   `rank` int(10) unsigned default NULL,
   `name` tinytext,
-  `body` mediumblob,
+  `body` mediumtext default NULL,
+  `deck` mediumtext default NULL,
+  `notes` mediumtext default NULL,
   `url` tinytext,
   `metadata` text,
   `ishome` int(1) unsigned NOT NULL default '0',
@@ -20,10 +23,9 @@ CREATE TABLE IF NOT EXISTS `media` (
   `created` datetime default NULL,
   `modified` datetime default NULL,
   `filename` tinytext,
-  `weight` float default NULL,
-  `rank` int(10) unsigned default NULL,
   `type` varchar(10) NOT NULL default 'jpg',
   `caption` text,
+  `metadata` tinytext,
   PRIMARY KEY  (`id`)
 );
 

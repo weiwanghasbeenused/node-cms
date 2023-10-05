@@ -2,13 +2,22 @@ html
     include includes/head.pug
     body
         main#main-container
-            if self
-                section#self
-                    div#self-name.row-name #{self.name}
-                    div.row-actions
-                        a.row-action.edit-btn(href="/edit" + tree)
-                        a.row-action.delete-btn(href="/delete" + tree)
-            if children.length
-                section#children
-            section#tool
-                a.row-action.add-btn(href="/add" + tree) ADD
+            - let ancestor_url = '/browse';
+            each item, n in tree
+                - ancestor_url = ancestor_url + "/" + item.url;
+                if(n !== tree.length - 1)
+                    div.ancestor-wrapper.row
+                        a(href=ancestor_url) #{item.name}
+                else
+                    div.self-wrapper.row.float-container #{item.name}
+                        div.actions-wrapper
+                            a.action.edit-btn.btn(href="/edit" + path) EDIT
+                            a.action.delete-btn.btn(href="/delete" + path) DELETE
+            section#children-container
+                each c, n in children
+                    div.child-wrapper.item-wrapper.row
+                        a(href="/browse"+path+"/"+c.url) #{c.name}
+                div.child-wrapper.item-wrapper.row 
+                    a.btn(href="/add" + path) ADD RECORD
+            section.fixed-btn-container.btn-container
+                a.btn.rounded(href="/browse" + path.substr(0, path.lastIndexOf('/'))) BACK

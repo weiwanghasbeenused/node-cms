@@ -1,0 +1,15 @@
+section#media-container.waiting.fullHeight.fullWidth.transparent.padding-container
+    div.waiting-message.message Loading media . . .
+    div#button-close-media-container.cross-icon
+    div#media-preview-container.flex-container
+    div#media-upload-container
+        form#media-form(enctype="multipart/form-data", method="post" action="/api/add/media")
+            input(type="hidden" form-type="media")
+            div#media-fields-container
+                div.media-field-wrapper(idx="1", data-state="empty")
+                    div.media-field-preview-wrapper
+                        img.media-field-preview
+                        input(id="media-field-1", type="file", name="media", class="media-field")
+                        label(for="media-field-1", class="btn large-button pseudo-upload-button")
+                    textarea(class="media-caption", name="media-caption[]" placeholder="caption", rows="5", disabled)
+            button#button-submit-insert-media(type="submit") Upload

@@ -3,7 +3,7 @@ const app = express()
 require('dotenv').config()
 const port = process.env.WEBSITE_PORT || 3000;
 const auth = require('./utils/auth');
-const conn = require('./utils/conn');
+const pool = require('./utils/conn');
 
 /*
     password protection
@@ -13,10 +13,7 @@ app.use(auth);
 /*
     app specific config
 */
-const config = require('./config/config')
 
-/* mysql */
-conn.init();
 app.set('view engine', 'pug')
 app.use(express.static(__dirname + "/public"));
 
@@ -26,20 +23,26 @@ app.use(express.static(__dirname + "/public"));
 const indexRouter = require('./routes/index')
 const browseRouter = require('./routes/browse')
 const editRouter = require('./routes/edit')
-const addRouter = require('./routes/add')({'config': config, 'conn': conn})
+const addRouter = require('./routes/add')
 const deleteRouter = require('./routes/delete')
-
+const apiRouter = require('./routes/api')
+let cmsParams = { 'pool': pool };
+app.use('/*', function(req,res,next){
+    let uri_raw = req.originalUrl.split('/');
+    let uri = [];
+    for(let i = 2; i < uri_raw.length; i++)
+        uri.push(uri_raw[i]);
+    cmsParams.uri = uri;
+    cmsParams.action = uri_raw[1];
+    req.cmsParams = cmsParams;
+    next();
+});
 app.use('/', indexRouter);
 app.use('/browse', browseRouter);
 app.use('/edit', editRouter);
-app.use('/add', function(req,res,next){
-    req.addParams = {
-        'config': config,
-        'conn': conn
-    }
-    next();
-}, addRouter);
+app.use('/add', addRouter);
 app.use('/delete', deleteRouter);
+app.use('/api', apiRouter);
 
 app.listen(port, ()=>{
     console.log('the app is running on port ' + port)

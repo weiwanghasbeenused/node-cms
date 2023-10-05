@@ -1,5 +1,6 @@
 label #{f.display}
 div.wysiwyg-container(field-name=n)
-    div.wysiwyg-blocks-wrapper
-        textarea(name=n + '[]', type=f.type, class="wysiwyg-element wysiwyg-textarea", rows="3")
-    div.wysiwyg-actions
+    div.wysiwyg-blocks-wrapper.empty
+        textarea.hidden(name=n, value=val) #{val}
+        include wysiwyg-placeholder.pug
+        
